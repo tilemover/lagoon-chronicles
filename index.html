@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,16 +13,22 @@
                 extend: {
                     colors: {
                         fantasy: {
-                            900: '#121019',
-                            800: '#1b1726',
-                            700: '#28223c',
-                            600: '#3c345a',
-                            500: '#594d82',
-                            gold: '#d4af37',
-                            goldLight: '#f3e5ab',
-                            wood: '#8b5a2b',
-                            ore: '#71717a',
-                            mana: '#3b82f6'
+                            50: '#fbf8ec',
+                            100: '#f4ebd2',
+                            200: '#ebd8a3',
+                            300: '#debe6d',
+                            400: '#d0a23d',
+                            500: '#b88626',
+                            600: '#996a1e',
+                            700: '#7a521a',
+                            800: '#5c3d18',
+                            900: '#3e2813',
+                            950: '#271a0c',
+                            sky: '#e0f2fe',
+                            ocean: '#0284c7',
+                            gold: '#ca8a04',
+                            emerald: '#059669',
+                            stone: '#52525b'
                         }
                     },
                     fontFamily: {
@@ -39,8 +45,8 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0f0e13;
-            color: #e4e4e7;
+            background-color: #f4ebd2;
+            color: #271a0c;
         }
         h1, h2, h3, h4, .font-cinzel {
             font-family: 'Cinzel', Georgia, serif;
@@ -50,43 +56,42 @@
             height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #1b1726;
+            background: #ebd8a3;
         }
         ::-webkit-scrollbar-thumb {
-            background: #3c345a;
+            background: #b88626;
             border-radius: 3px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #594d82;
+            background: #996a1e;
         }
         .parchment-panel {
-            background: linear-gradient(135deg, #1b1726 0%, #161320 100%);
-            border: 1px solid #3c345a;
+            background: linear-gradient(135deg, #fffdf9 0%, #f7f1e3 100%);
+            border: 2px solid #debe6d;
+            box-shadow: 0 10px 25px -5px rgba(184, 134, 38, 0.15), 0 8px 10px -6px rgba(184, 134, 38, 0.1);
         }
-        /* Hex grid styling helper */
-        .hex-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-            gap: 12px;
+        /* True Geometric Hexagon Clip Path */
+        .hex-shape {
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col bg-fantasy-900 text-zinc-200">
+<body class="min-h-screen flex flex-col bg-fantasy-100 text-fantasy-950">
 
     <!-- Top Navigation Bar -->
-    <header class="bg-fantasy-800 border-b border-fantasy-600 sticky top-0 z-40 px-4 py-3 shadow-xl">
+    <header class="bg-fantasy-50 border-b-2 border-fantasy-300 sticky top-0 z-40 px-4 py-3 shadow-md">
         <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
             <!-- Game Title & Turn Info -->
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-md border border-amber-400">
-                    <i class="fa-solid fa-water text-fantasy-900 text-lg"></i>
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-md border-2 border-amber-200">
+                    <i class="fa-solid fa-water text-white text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="text-lg md:text-xl font-bold tracking-wider text-amber-400 font-cinzel">Lagoon Chronicles</h1>
-                    <div class="flex items-center space-x-2 text-xs text-zinc-400">
-                        <span id="header-turn-display" class="bg-fantasy-700 px-2 py-0.5 rounded text-amber-300 font-medium">Turn 1</span>
+                    <h1 class="text-lg md:text-xl font-bold tracking-wider text-fantasy-900 font-cinzel">Lagoon Chronicles</h1>
+                    <div class="flex items-center space-x-2 text-xs text-fantasy-700">
+                        <span id="header-turn-display" class="bg-fantasy-200 px-2 py-0.5 rounded text-fantasy-900 font-bold">Turn 1</span>
                         <span>•</span>
-                        <span id="turn-lock-status" class="text-emerald-400 font-medium"><i class="fa-solid fa-lock-open mr-1"></i>Your Turn (Active)</span>
+                        <span id="turn-lock-status" class="text-emerald-700 font-bold"><i class="fa-solid fa-lock-open mr-1"></i>Your Turn (Active)</span>
                     </div>
                 </div>
             </div>
@@ -94,53 +99,53 @@
             <!-- Resource & Energy Bar -->
             <div class="flex items-center space-x-2 md:space-x-4 overflow-x-auto py-1">
                 <!-- Action Points (Energy) -->
-                <div class="flex items-center space-x-1.5 bg-amber-950/60 px-3 py-1 rounded border border-amber-500/50 shadow-inner" title="Action Points (AP) - Resets each turn">
-                    <i class="fa-solid fa-bolt text-amber-400"></i>
-                    <span class="text-xs text-amber-300 font-bold">AP:</span>
-                    <span id="res-ap" class="font-bold text-sm text-amber-200">5/5</span>
+                <div class="flex items-center space-x-1.5 bg-amber-100 px-3 py-1 rounded-lg border border-amber-400 shadow-sm" title="Action Points (AP) - Resets each turn">
+                    <i class="fa-solid fa-bolt text-amber-600"></i>
+                    <span class="text-xs text-amber-900 font-bold">AP:</span>
+                    <span id="res-ap" class="font-bold text-sm text-amber-950">5/5</span>
                 </div>
                 <!-- Wood -->
-                <div class="flex items-center space-x-1.5 bg-fantasy-900/80 px-2.5 py-1 rounded border border-fantasy-600 shadow-inner" title="Wood">
-                    <i class="fa-solid fa-tree text-amber-700"></i>
-                    <span id="res-wood" class="font-bold text-sm text-zinc-100">50</span>
-                    <span class="text-[10px] text-emerald-400">+10</span>
+                <div class="flex items-center space-x-1.5 bg-white px-2.5 py-1 rounded-lg border border-fantasy-300 shadow-sm" title="Wood">
+                    <i class="fa-solid fa-tree text-amber-800"></i>
+                    <span id="res-wood" class="font-bold text-sm text-fantasy-900">50</span>
+                    <span class="text-[10px] text-emerald-600 font-bold">+10</span>
                 </div>
                 <!-- Ore -->
-                <div class="flex items-center space-x-1.5 bg-fantasy-900/80 px-2.5 py-1 rounded border border-fantasy-600 shadow-inner" title="Ore">
-                    <i class="fa-solid fa-mountain text-zinc-400"></i>
-                    <span id="res-ore" class="font-bold text-sm text-zinc-100">40</span>
-                    <span class="text-[10px] text-emerald-400">+5</span>
+                <div class="flex items-center space-x-1.5 bg-white px-2.5 py-1 rounded-lg border border-fantasy-300 shadow-sm" title="Ore">
+                    <i class="fa-solid fa-mountain text-zinc-500"></i>
+                    <span id="res-ore" class="font-bold text-sm text-fantasy-900">40</span>
+                    <span class="text-[10px] text-emerald-600 font-bold">+5</span>
                 </div>
                 <!-- Gold -->
-                <div class="flex items-center space-x-1.5 bg-fantasy-900/80 px-2.5 py-1 rounded border border-fantasy-600 shadow-inner" title="Gold">
-                    <i class="fa-solid fa-coins text-amber-400"></i>
-                    <span id="res-gold" class="font-bold text-sm text-zinc-100">100</span>
-                    <span class="text-[10px] text-emerald-400">+15</span>
+                <div class="flex items-center space-x-1.5 bg-white px-2.5 py-1 rounded-lg border border-fantasy-300 shadow-sm" title="Gold">
+                    <i class="fa-solid fa-coins text-amber-500"></i>
+                    <span id="res-gold" class="font-bold text-sm text-fantasy-900">100</span>
+                    <span class="text-[10px] text-emerald-600 font-bold">+15</span>
                 </div>
                 <!-- Mana -->
-                <div class="flex items-center space-x-1.5 bg-fantasy-900/80 px-2.5 py-1 rounded border border-fantasy-600 shadow-inner" title="Mana">
-                    <i class="fa-solid fa-wand-sparkles text-blue-400"></i>
-                    <span id="res-mana" class="font-bold text-sm text-zinc-100">30</span>
-                    <span class="text-[10px] text-emerald-400">+5</span>
+                <div class="flex items-center space-x-1.5 bg-white px-2.5 py-1 rounded-lg border border-fantasy-300 shadow-sm" title="Mana">
+                    <i class="fa-solid fa-wand-sparkles text-blue-500"></i>
+                    <span id="res-mana" class="font-bold text-sm text-fantasy-900">30</span>
+                    <span class="text-[10px] text-emerald-600 font-bold">+5</span>
                 </div>
             </div>
 
             <!-- Profile & Quick Actions -->
             <div class="flex items-center space-x-3">
-                <button onclick="openModal('modal-actions')" class="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-fantasy-900 font-bold px-3.5 py-2 rounded shadow-md text-xs flex items-center space-x-1.5 transition">
+                <button onclick="openModal('modal-actions')" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold px-3.5 py-2 rounded-lg shadow-md text-xs flex items-center space-x-1.5 transition">
                     <i class="fa-solid fa-forward"></i>
                     <span>End Turn</span>
                 </button>
-                <button onclick="openModal('modal-settings')" class="bg-fantasy-700 hover:bg-fantasy-600 text-amber-300 border border-fantasy-500 font-bold px-2.5 py-2 rounded shadow-md text-xs flex items-center space-x-1 transition" title="Discord Webhook & Settings">
-                    <i class="fa-brands fa-discord"></i>
+                <button onclick="openModal('modal-settings')" class="bg-white hover:bg-fantasy-100 text-fantasy-900 border border-fantasy-300 font-bold px-2.5 py-2 rounded-lg shadow-sm text-xs flex items-center space-x-1 transition" title="Discord Webhook & Settings">
+                    <i class="fa-brands fa-discord text-indigo-600"></i>
                     <span class="hidden md:inline">Discord</span>
                 </button>
-                <button onclick="openTutorial()" class="bg-fantasy-700 hover:bg-fantasy-600 text-amber-300 border border-fantasy-500 font-bold px-2.5 py-2 rounded shadow-md text-xs flex items-center space-x-1 transition" title="Tutorial Guide">
-                    <i class="fa-solid fa-book-open"></i>
+                <button onclick="openTutorial()" class="bg-white hover:bg-fantasy-100 text-fantasy-900 border border-fantasy-300 font-bold px-2.5 py-2 rounded-lg shadow-sm text-xs flex items-center space-x-1 transition" title="Tutorial Guide">
+                    <i class="fa-solid fa-book-open text-amber-600"></i>
                     <span class="hidden md:inline">Guide</span>
                 </button>
-                <div class="flex items-center space-x-2 pl-2 border-l border-fantasy-600">
-                    <div id="player-avatar-badge" class="w-8 h-8 rounded-full bg-fantasy-600 flex items-center justify-center border border-amber-500/50 text-amber-300 font-bold text-xs" title="Lord Profile">
+                <div class="flex items-center space-x-2 pl-2 border-l border-fantasy-300">
+                    <div id="player-avatar-badge" class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center border-2 border-white text-white font-bold text-xs shadow" title="Lord Profile">
                         LC
                     </div>
                 </div>
@@ -155,17 +160,17 @@
         <div class="lg:col-span-4 flex flex-col space-y-6">
             
             <!-- Tab Navigation Header -->
-            <div class="flex rounded-lg bg-fantasy-800 p-1 border border-fantasy-600 shadow-md">
-                <button onclick="switchTab('realm')" id="tab-btn-realm" class="flex-1 py-2 text-xs font-bold rounded-md bg-amber-600 text-fantasy-900 transition flex items-center justify-center space-x-1">
+            <div class="flex rounded-xl bg-fantasy-200 p-1.5 border border-fantasy-300 shadow-sm">
+                <button onclick="switchTab('realm')" id="tab-btn-realm" class="flex-1 py-2 text-xs font-bold rounded-lg bg-amber-500 text-white transition flex items-center justify-center space-x-1 shadow-sm">
                     <i class="fa-solid fa-castle"></i><span>Realm</span>
                 </button>
-                <button onclick="switchTab('heroes')" id="tab-btn-heroes" class="flex-1 py-2 text-xs font-bold rounded-md text-zinc-400 hover:text-white transition flex items-center justify-center space-x-1">
+                <button onclick="switchTab('heroes')" id="tab-btn-heroes" class="flex-1 py-2 text-xs font-bold rounded-lg text-fantasy-800 hover:text-fantasy-950 transition flex items-center justify-center space-x-1">
                     <i class="fa-solid fa-shield-halved"></i><span>Heroes</span>
                 </button>
-                <button onclick="switchTab('market')" id="tab-btn-market" class="flex-1 py-2 text-xs font-bold rounded-md text-zinc-400 hover:text-white transition flex items-center justify-center space-x-1">
+                <button onclick="switchTab('market')" id="tab-btn-market" class="flex-1 py-2 text-xs font-bold rounded-lg text-fantasy-800 hover:text-fantasy-950 transition flex items-center justify-center space-x-1">
                     <i class="fa-solid fa-scale-balanced"></i><span>Market</span>
                 </button>
-                <button onclick="switchTab('social')" id="tab-btn-social" class="flex-1 py-2 text-xs font-bold rounded-md text-zinc-400 hover:text-white transition flex items-center justify-center space-x-1 relative">
+                <button onclick="switchTab('social')" id="tab-btn-social" class="flex-1 py-2 text-xs font-bold rounded-lg text-fantasy-800 hover:text-fantasy-950 transition flex items-center justify-center space-x-1 relative">
                     <i class="fa-solid fa-comments"></i><span>Social</span>
                     <span id="chat-badge" class="absolute top-1 right-1 w-2 h-2 rounded-full bg-amber-500 hidden"></span>
                 </button>
@@ -174,62 +179,62 @@
             <!-- TAB 1: REALM & SETTLEMENT MANAGEMENT -->
             <div id="tab-content-realm" class="space-y-6">
                 <!-- Settlement Overview & Energy Boosters -->
-                <div class="parchment-panel rounded-xl p-4 shadow-xl">
+                <div class="parchment-panel rounded-2xl p-5 shadow-lg">
                     <div class="flex justify-between items-center mb-3">
-                        <h2 class="font-cinzel font-bold text-amber-400 text-sm flex items-center space-x-2">
-                            <i class="fa-solid fa-house-chimney text-amber-500"></i>
+                        <h2 class="font-cinzel font-bold text-fantasy-900 text-sm flex items-center space-x-2">
+                            <i class="fa-solid fa-house-chimney text-amber-600"></i>
                             <span id="sidebar-settlement-name">Capital: Lagoon Haven</span>
                         </h2>
-                        <span class="text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded border border-amber-500/30">Level 1</span>
+                        <span class="text-xs bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full border border-amber-300 font-bold">Level 1</span>
                     </div>
-                    <p class="text-xs text-zinc-400 mb-4">Construct Town Halls and Mana Shrines to expand your Action Point (AP) energy cap and boost per-turn regeneration.</p>
+                    <p class="text-xs text-fantasy-700 mb-4">Construct Town Halls and Mana Shrines to expand your Action Point (AP) energy cap and boost per-turn regeneration.</p>
                     
                     <!-- Structures List -->
                     <div class="space-y-3">
                         <!-- Town Hall (AP Booster) -->
-                        <div class="bg-fantasy-900/60 p-3 rounded-lg border border-fantasy-600/60 flex items-center justify-between">
+                        <div class="bg-white p-3 rounded-xl border border-fantasy-300 flex items-center justify-between shadow-sm">
                             <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 rounded bg-amber-900/40 border border-amber-700/50 flex items-center justify-center text-amber-500">
+                                <div class="w-10 h-10 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600">
                                     <i class="fa-solid fa-landmark text-lg"></i>
                                 </div>
                                 <div>
-                                    <div class="text-xs font-bold text-zinc-200">Town Hall (Lv. 1)</div>
-                                    <div class="text-[10px] text-amber-400">+2 Max AP Energy / turn</div>
+                                    <div class="text-xs font-bold text-fantasy-900">Town Hall (Lv. 1)</div>
+                                    <div class="text-[10px] text-amber-700 font-semibold">+2 Max AP Energy / turn</div>
                                 </div>
                             </div>
-                            <button onclick="upgradeBuilding('Town Hall', 70, 50)" class="bg-fantasy-700 hover:bg-amber-600 hover:text-fantasy-900 text-amber-300 text-xs font-bold px-3 py-1.5 rounded transition border border-fantasy-500">
+                            <button onclick="upgradeBuilding('Town Hall', 70, 50)" class="bg-fantasy-200 hover:bg-amber-500 hover:text-white text-fantasy-900 text-xs font-bold px-3 py-1.5 rounded-lg transition border border-fantasy-300 shadow-sm">
                                 Upgrade (70W, 50O)
                             </button>
                         </div>
 
                         <!-- Lumber Mill -->
-                        <div class="bg-fantasy-900/60 p-3 rounded-lg border border-fantasy-600/60 flex items-center justify-between">
+                        <div class="bg-white p-3 rounded-xl border border-fantasy-300 flex items-center justify-between shadow-sm">
                             <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 rounded bg-amber-900/40 border border-amber-700/50 flex items-center justify-center text-amber-500">
+                                <div class="w-10 h-10 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-800">
                                     <i class="fa-solid fa-tree text-lg"></i>
                                 </div>
                                 <div>
-                                    <div class="text-xs font-bold text-zinc-200">Lumber Mill (Lv. 1)</div>
-                                    <div class="text-[10px] text-emerald-400">+10 Wood / turn</div>
+                                    <div class="text-xs font-bold text-fantasy-900">Lumber Mill (Lv. 1)</div>
+                                    <div class="text-[10px] text-emerald-700 font-semibold">+10 Wood / turn</div>
                                 </div>
                             </div>
-                            <button onclick="upgradeBuilding('Lumber Mill', 50, 30)" class="bg-fantasy-700 hover:bg-amber-600 hover:text-fantasy-900 text-amber-300 text-xs font-bold px-3 py-1.5 rounded transition border border-fantasy-500">
+                            <button onclick="upgradeBuilding('Lumber Mill', 50, 30)" class="bg-fantasy-200 hover:bg-amber-500 hover:text-white text-fantasy-900 text-xs font-bold px-3 py-1.5 rounded-lg transition border border-fantasy-300 shadow-sm">
                                 Upgrade (50W, 30O)
                             </button>
                         </div>
 
                         <!-- Iron Mine -->
-                        <div class="bg-fantasy-900/60 p-3 rounded-lg border border-fantasy-600/60 flex items-center justify-between">
+                        <div class="bg-white p-3 rounded-xl border border-fantasy-300 flex items-center justify-between shadow-sm">
                             <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 rounded bg-zinc-800 border border-zinc-600 flex items-center justify-center text-zinc-300">
+                                <div class="w-10 h-10 rounded-lg bg-zinc-100 border border-zinc-300 flex items-center justify-center text-zinc-600">
                                     <i class="fa-solid fa-mountain text-lg"></i>
                                 </div>
                                 <div>
-                                    <div class="text-xs font-bold text-zinc-200">Iron Mine (Lv. 1)</div>
-                                    <div class="text-[10px] text-emerald-400">+5 Ore / turn</div>
+                                    <div class="text-xs font-bold text-fantasy-900">Iron Mine (Lv. 1)</div>
+                                    <div class="text-[10px] text-emerald-700 font-semibold">+5 Ore / turn</div>
                                 </div>
                             </div>
-                            <button onclick="upgradeBuilding('Iron Mine', 60, 40)" class="bg-fantasy-700 hover:bg-amber-600 hover:text-fantasy-900 text-amber-300 text-xs font-bold px-3 py-1.5 rounded transition border border-fantasy-500">
+                            <button onclick="upgradeBuilding('Iron Mine', 60, 40)" class="bg-fantasy-200 hover:bg-amber-500 hover:text-white text-fantasy-900 text-xs font-bold px-3 py-1.5 rounded-lg transition border border-fantasy-300 shadow-sm">
                                 Upgrade (60W, 40O)
                             </button>
                         </div>
@@ -237,19 +242,19 @@
                 </div>
 
                 <!-- Chronicles Log & Reset Option -->
-                <div class="parchment-panel rounded-xl p-4 shadow-xl">
+                <div class="parchment-panel rounded-2xl p-5 shadow-lg">
                     <div class="flex justify-between items-center mb-3">
-                        <h3 class="font-cinzel font-bold text-amber-400 text-sm flex items-center space-x-2">
-                            <i class="fa-solid fa-scroll text-amber-500"></i>
+                        <h3 class="font-cinzel font-bold text-fantasy-900 text-sm flex items-center space-x-2">
+                            <i class="fa-solid fa-scroll text-amber-600"></i>
                             <span>Lagoon Chronicles Log</span>
                         </h3>
-                        <button onclick="resetGame()" class="text-[10px] bg-red-900/40 hover:bg-red-800 text-red-300 px-2 py-1 rounded border border-red-700 transition flex items-center space-x-1" title="Reset game back to Turn 1">
+                        <button onclick="resetGame()" class="text-[10px] bg-red-100 hover:bg-red-200 text-red-700 px-2.5 py-1.5 rounded-lg border border-red-300 transition flex items-center space-x-1 font-semibold" title="Reset game back to Turn 1">
                             <i class="fa-solid fa-rotate-right"></i><span>Reset Game</span>
                         </button>
                     </div>
-                    <div id="activity-log" class="space-y-2 text-xs text-zinc-300 max-h-36 overflow-y-auto pr-1">
-                        <div class="p-2 rounded bg-fantasy-900/40 border-l-2 border-amber-500">
-                            <span class="text-amber-400 font-semibold">[Turn 1]</span> Settlement founded. Welcome to Lagoon Chronicles!
+                    <div id="activity-log" class="space-y-2 text-xs text-fantasy-800 max-h-36 overflow-y-auto pr-1">
+                        <div class="p-2 rounded-lg bg-white/80 border-l-4 border-amber-500 shadow-sm">
+                            <span class="text-amber-700 font-bold">[Turn 1]</span> Settlement founded. Welcome to Lagoon Chronicles!
                         </div>
                     </div>
                 </div>
@@ -257,17 +262,17 @@
 
             <!-- TAB 2: HEROES MANAGEMENT -->
             <div id="tab-content-heroes" class="space-y-6 hidden">
-                <div class="parchment-panel rounded-xl p-4 shadow-xl">
+                <div class="parchment-panel rounded-2xl p-5 shadow-lg">
                     <div class="flex justify-between items-center mb-3">
-                        <h2 class="font-cinzel font-bold text-amber-400 text-sm flex items-center space-x-2">
-                            <i class="fa-solid fa-shield-halved text-amber-500"></i>
+                        <h2 class="font-cinzel font-bold text-fantasy-900 text-sm flex items-center space-x-2">
+                            <i class="fa-solid fa-shield-halved text-amber-600"></i>
                             <span>Active Champions</span>
                         </h2>
-                        <button onclick="openModal('modal-recruit')" class="bg-amber-600 hover:bg-amber-500 text-fantasy-900 text-xs font-bold px-2.5 py-1.5 rounded shadow">
+                        <button onclick="openModal('modal-recruit')" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm">
                             <i class="fa-solid fa-user-plus mr-1"></i>Recruit
                         </button>
                     </div>
-                    <p class="text-xs text-zinc-400 mb-4">Command your recruited champions on expeditions across the hex archipelago (costs 1 AP).</p>
+                    <p class="text-xs text-fantasy-700 mb-4">Command your recruited champions on expeditions across the hex archipelago (costs 1 AP).</p>
 
                     <!-- Hero Cards List container -->
                     <div id="heroes-roster-container" class="space-y-3">
@@ -278,29 +283,29 @@
 
             <!-- TAB 3: MARKETPLACE / TRADE -->
             <div id="tab-content-market" class="space-y-6 hidden">
-                <div class="parchment-panel rounded-xl p-4 shadow-xl">
+                <div class="parchment-panel rounded-2xl p-5 shadow-lg">
                     <div class="flex justify-between items-center mb-3">
-                        <h2 class="font-cinzel font-bold text-amber-400 text-sm flex items-center space-x-2">
-                            <i class="fa-solid fa-scale-balanced text-amber-500"></i>
+                        <h2 class="font-cinzel font-bold text-fantasy-900 text-sm flex items-center space-x-2">
+                            <i class="fa-solid fa-scale-balanced text-amber-600"></i>
                             <span>Player Trade Post</span>
                         </h2>
-                        <button onclick="openModal('modal-create-trade')" class="bg-amber-600 hover:bg-amber-500 text-fantasy-900 text-xs font-bold px-2.5 py-1.5 rounded shadow">
+                        <button onclick="openModal('modal-create-trade')" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm">
                             <i class="fa-solid fa-plus mr-1"></i>New Offer
                         </button>
                     </div>
-                    <p class="text-xs text-zinc-400 mb-4">Trade excess resources with fellow lagoon lords across the persistent economy.</p>
+                    <p class="text-xs text-fantasy-700 mb-4">Trade excess resources with fellow lagoon lords across the persistent economy.</p>
 
                     <div class="space-y-3">
-                        <div class="bg-fantasy-900/80 p-3 rounded-lg border border-fantasy-600 flex items-center justify-between">
+                        <div class="bg-white p-3.5 rounded-xl border border-fantasy-300 flex items-center justify-between shadow-sm">
                             <div>
-                                <div class="text-[10px] text-amber-400 font-semibold mb-0.5">Offered by: Lord Varis</div>
-                                <div class="text-xs font-bold text-zinc-200 flex items-center space-x-2">
-                                    <span class="text-amber-500"><i class="fa-solid fa-tree mr-1"></i>25 Wood</span>
-                                    <i class="fa-solid fa-arrow-right text-zinc-500 text-[10px]"></i>
-                                    <span class="text-zinc-300"><i class="fa-solid fa-mountain mr-1"></i>20 Ore</span>
+                                <div class="text-[10px] text-amber-700 font-bold mb-0.5">Offered by: Lord Varis</div>
+                                <div class="text-xs font-bold text-fantasy-900 flex items-center space-x-2">
+                                    <span class="text-amber-800"><i class="fa-solid fa-tree mr-1"></i>25 Wood</span>
+                                    <i class="fa-solid fa-arrow-right text-zinc-400 text-[10px]"></i>
+                                    <span class="text-zinc-600"><i class="fa-solid fa-mountain mr-1"></i>20 Ore</span>
                                 </div>
                             </div>
-                            <button onclick="executeTrade(1)" class="bg-amber-600 hover:bg-amber-500 text-fantasy-900 font-bold text-xs px-3 py-1.5 rounded transition shadow">
+                            <button onclick="executeTrade(1)" class="bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs px-3.5 py-2 rounded-lg transition shadow-sm">
                                 Accept
                             </button>
                         </div>
@@ -311,37 +316,37 @@
             <!-- TAB 4: SOCIAL (CHAT & MESSAGEBOARD) -->
             <div id="tab-content-social" class="space-y-6 hidden">
                 <!-- Sub-tabs for Chat / Messageboard -->
-                <div class="flex rounded bg-fantasy-900 p-1 border border-fantasy-600 text-xs">
-                    <button onclick="switchSocialSub('chat')" id="social-btn-chat" class="flex-1 py-1.5 font-bold rounded bg-amber-600 text-fantasy-900 transition">Council Chat</button>
-                    <button onclick="switchSocialSub("board")" id="social-btn-board" class="flex-1 py-1.5 font-bold rounded text-zinc-400 hover:text-white transition">Messageboard</button>
+                <div class="flex rounded-lg bg-fantasy-200 p-1 border border-fantasy-300 text-xs">
+                    <button onclick="switchSocialSub('chat')" id="social-btn-chat" class="flex-1 py-1.5 font-bold rounded-md bg-amber-500 text-white transition shadow-sm">Council Chat</button>
+                    <button onclick="switchSocialSub('board')" id="social-btn-board" class="flex-1 py-1.5 font-bold rounded-md text-fantasy-800 hover:text-fantasy-950 transition">Messageboard</button>
                 </div>
 
                 <!-- Chat View -->
-                <div id="social-sub-chat" class="parchment-panel rounded-xl p-4 shadow-xl flex flex-col h-[380px]">
-                    <div id="chat-messages" class="flex-1 bg-fantasy-900/90 rounded-xl p-3 border border-fantasy-600 overflow-y-auto space-y-3 mb-3 text-xs">
-                        <div class="bg-fantasy-800/80 p-2.5 rounded-lg border border-fantasy-600">
+                <div id="social-sub-chat" class="parchment-panel rounded-2xl p-5 shadow-lg flex flex-col h-[380px]">
+                    <div id="chat-messages" class="flex-1 bg-white rounded-xl p-3.5 border border-fantasy-300 overflow-y-auto space-y-3 mb-3 text-xs shadow-inner">
+                        <div class="bg-fantasy-50 p-2.5 rounded-xl border border-fantasy-200">
                             <div class="flex justify-between items-center mb-1">
-                                <span class="font-bold text-amber-400 font-cinzel">Grand Chancellor</span>
-                                <span class="text-[9px] text-zinc-500">Turn 1</span>
+                                <span class="font-bold text-amber-700 font-cinzel">Grand Chancellor</span>
+                                <span class="text-[9px] text-zinc-400">Turn 1</span>
                             </div>
-                            <p class="text-zinc-300">Welcome to Lagoon Chronicles! Coordinate wisely and claim the archipelago.</p>
+                            <p class="text-fantasy-900">Welcome to Lagoon Chronicles! Coordinate wisely and claim the archipelago.</p>
                         </div>
                     </div>
                     <form onsubmit="sendChatMessage(event)" class="flex space-x-2">
-                        <input type="text" id="chat-input" placeholder="Type a message..." class="flex-1 bg-fantasy-900 border border-fantasy-600 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
-                        <button type="submit" class="bg-amber-600 hover:bg-amber-500 text-fantasy-900 font-bold px-3 py-2 rounded-lg text-xs shadow transition">
+                        <input type="text" id="chat-input" placeholder="Type a message..." class="flex-1 bg-white border border-fantasy-300 rounded-xl px-3.5 py-2 text-xs text-fantasy-900 focus:outline-none focus:border-amber-500 shadow-sm">
+                        <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow-sm transition">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
                     </form>
                 </div>
 
                 <!-- Messageboard View -->
-                <div id="social-sub-board" class="parchment-panel rounded-xl p-4 shadow-xl flex flex-col h-[380px] hidden">
+                <div id="social-sub-board" class="parchment-panel rounded-2xl p-5 shadow-lg flex flex-col h-[380px] hidden">
                     <div class="flex justify-between items-center mb-2">
-                        <h3 class="text-xs font-bold text-amber-400 font-cinzel"><i class="fa-solid fa-note-sticky mr-1"></i>Player Bulletin Board</h3>
-                        <button onclick="openModal('modal-post-message')" class="text-[10px] bg-amber-600 text-fantasy-900 font-bold px-2 py-1 rounded">Post Note</button>
+                        <h3 class="text-xs font-bold text-fantasy-900 font-cinzel"><i class="fa-solid fa-note-sticky mr-1 text-amber-600"></i>Player Bulletin Board</h3>
+                        <button onclick="openModal('modal-post-message')" class="text-[10px] bg-amber-500 text-white font-bold px-2.5 py-1.5 rounded-lg shadow-sm">Post Note</button>
                     </div>
-                    <div id="messageboard-posts" class="flex-1 bg-fantasy-900/90 rounded-xl p-3 border border-fantasy-600 overflow-y-auto space-y-3 mb-2 text-xs">
+                    <div id="messageboard-posts" class="flex-1 bg-white rounded-xl p-3.5 border border-fantasy-300 overflow-y-auto space-y-3 mb-2 text-xs shadow-inner">
                         <!-- Dynamically populated bulletin posts -->
                     </div>
                 </div>
@@ -353,47 +358,50 @@
         <div class="lg:col-span-8 flex flex-col space-y-6">
             
             <!-- Map Card -->
-            <div class="parchment-panel rounded-xl p-4 shadow-xl flex flex-col flex-1 min-h-[520px]">
+            <div class="parchment-panel rounded-2xl p-5 shadow-lg flex flex-col flex-1 min-h-[560px]">
                 <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
                     <div>
-                        <h2 class="font-cinzel font-bold text-amber-400 text-base flex items-center space-x-2">
-                            <i class="fa-solid fa-map text-amber-500"></i>
-                            <span>True Hex Archipelago Map</span>
+                        <h2 class="font-cinzel font-bold text-fantasy-900 text-base flex items-center space-x-2">
+                            <i class="fa-solid fa-map text-amber-600"></i>
+                            <span>True Geometric Hex Map (25+ Hexes)</span>
                         </h2>
-                        <p class="text-xs text-zinc-400">Explore fogged tiles (costs 1 AP) or interact with revealed territory nodes.</p>
+                        <p class="text-xs text-fantasy-700">Explore fogged tiles (costs 1 AP) to expand the procedural archipelago at borders.</p>
                     </div>
                     <!-- Legend -->
-                    <div class="flex items-center space-x-3 text-[11px] bg-fantasy-900/80 px-3 py-1.5 rounded-lg border border-fantasy-600">
-                        <span class="font-bold text-amber-400 font-cinzel mr-1">Legend:</span>
-                        <span class="flex items-center space-x-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-600 inline-block"></span><span>Forest</span></span>
-                        <span class="flex items-center space-x-1"><span class="w-2.5 h-2.5 rounded-full bg-zinc-400 inline-block"></span><span>Mountain</span></span>
-                        <span class="flex items-center space-x-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span><span>Farm</span></span>
-                        <span class="flex items-center space-x-1"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span><span>Nexus</span></span>
+                    <div class="flex flex-wrap items-center gap-3 text-[11px] bg-white px-3.5 py-2 rounded-xl border border-fantasy-300 shadow-sm">
+                        <span class="font-bold text-amber-800 font-cinzel">Legend:</span>
+                        <span class="flex items-center space-x-1"><span class="w-3 h-3 rounded-full bg-amber-600 inline-block shadow-sm"></span><span>Forest</span></span>
+                        <span class="flex items-center space-x-1"><span class="w-3 h-3 rounded-full bg-zinc-500 inline-block shadow-sm"></span><span>Mountain</span></span>
+                        <span class="flex items-center space-x-1"><span class="w-3 h-3 rounded-full bg-emerald-600 inline-block shadow-sm"></span><span>Farm</span></span>
+                        <span class="flex items-center space-x-1"><span class="w-3 h-3 rounded-full bg-amber-700 inline-block shadow-sm"></span><span>Clay Pit</span></span>
+                        <span class="flex items-center space-x-1"><span class="w-3 h-3 rounded-full bg-blue-600 inline-block shadow-sm"></span><span>Nexus</span></span>
                     </div>
                 </div>
 
-                <!-- True Hex Map Container -->
-                <div class="flex-1 bg-fantasy-900/90 rounded-xl border border-fantasy-600 p-4 relative overflow-hidden flex items-center justify-center min-h-[400px]">
-                    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:24px_24px]"></div>
+                <!-- Geometric SVG Hex Map Render Area -->
+                <div class="flex-1 bg-gradient-to-br from-blue-50/50 to-amber-50/40 rounded-2xl border-2 border-fantasy-300 p-2 relative overflow-hidden flex items-center justify-center min-h-[440px] shadow-inner">
+                    <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#b88626_1px,transparent_1px)] [background-size:28px_28px]"></div>
 
-                    <!-- Hex Grid Render Area -->
-                    <div id="hex-map-grid" class="grid grid-cols-3 sm:grid-cols-4 gap-3 relative z-10 w-full max-w-3xl p-2">
-                        <!-- Rendered dynamically by JS -->
+                    <!-- SVG Hex Grid Container -->
+                    <div id="hex-svg-container" class="relative w-full h-[440px] flex items-center justify-center overflow-auto">
+                        <svg id="hex-map-svg" class="w-full h-full min-w-[650px] min-h-[440px]" viewBox="-350 -250 700 500" preserveAspectRatio="xMidYMid meet">
+                            <!-- Rendered dynamically by JS -->
+                        </svg>
                     </div>
                 </div>
 
                 <!-- Selected Tile Detail Footer -->
-                <div id="tile-detail-panel" class="mt-4 bg-fantasy-900/80 p-4 rounded-xl border border-fantasy-600 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div id="tile-detail-panel" class="mt-4 bg-white p-4 rounded-xl border border-fantasy-300 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
                     <div>
-                        <div class="text-xs text-amber-400 font-semibold mb-1"><i class="fa-solid fa-location-crosshairs mr-1"></i>Selected Hex Tile</div>
-                        <div class="font-cinzel font-bold text-white text-sm" id="selected-tile-name">Capital: Lagoon Haven (Forest)</div>
-                        <div class="text-xs text-zinc-400" id="selected-tile-info">Status: Explored & Claimed • Yield: +10 Wood/turn</div>
+                        <div class="text-xs text-amber-700 font-bold mb-1"><i class="fa-solid fa-location-crosshairs mr-1"></i>Selected Hex Tile</div>
+                        <div class="font-cinzel font-bold text-fantasy-900 text-sm" id="selected-tile-name">Capital: Lagoon Haven (Forest)</div>
+                        <div class="text-xs text-fantasy-700" id="selected-tile-info">Status: Explored & Claimed • Yield: +10 Wood/turn</div>
                     </div>
                     <div id="tile-action-buttons" class="flex items-center space-x-2">
-                        <button onclick="exploreSelectedHex()" id="btn-explore-hex" class="bg-amber-600 hover:bg-amber-500 text-fantasy-900 text-xs font-bold px-3.5 py-2 rounded shadow transition flex items-center space-x-1 hidden">
+                        <button onclick="exploreSelectedHex()" id="btn-explore-hex" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-4 py-2 rounded-lg shadow transition flex items-center space-x-1.5 hidden">
                             <i class="fa-solid fa-compass"></i><span>Explore Hex (1 AP)</span>
                         </button>
-                        <button onclick="raidSelectedHex()" id="btn-interact-hex" class="bg-fantasy-700 hover:bg-amber-600 text-amber-300 hover:text-fantasy-900 text-xs font-bold px-3.5 py-2 rounded shadow transition flex items-center space-x-1">
+                        <button onclick="inspectSelectedHex()" id="btn-interact-hex" class="bg-fantasy-200 hover:bg-amber-500 hover:text-white text-fantasy-900 text-xs font-bold px-4 py-2 rounded-lg shadow transition flex items-center space-x-1.5 border border-fantasy-300">
                             <i class="fa-solid fa-shield"></i><span>Inspect Node</span>
                         </button>
                     </div>
@@ -406,24 +414,24 @@
     </main>
 
     <!-- SETTLEMENT NAMING MODAL (ON FIRST JOIN) -->
-    <div id="modal-naming" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="parchment-panel rounded-2xl max-w-md w-full p-6 md:p-8 border border-amber-500 shadow-2xl relative text-center">
-            <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-amber-500/20 border border-amber-500 flex items-center justify-center text-amber-400 text-2xl font-bold shadow-lg">
+    <div id="modal-naming" class="fixed inset-0 bg-fantasy-950/70 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="parchment-panel rounded-3xl max-w-md w-full p-6 md:p-8 border-2 border-amber-500 shadow-2xl relative text-center">
+            <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-2xl font-bold shadow-lg">
                 <i class="fa-solid fa-water"></i>
             </div>
-            <h2 class="font-cinzel font-bold text-white text-xl md:text-2xl mb-1">Found Your Lagoon Dynasty</h2>
-            <p class="text-xs text-zinc-400 mb-6">Enter your Lord name and the name of your capital settlement to begin your months-long campaign.</p>
+            <h2 class="font-cinzel font-bold text-fantasy-950 text-xl md:text-2xl mb-1">Found Your Lagoon Dynasty</h2>
+            <p class="text-xs text-fantasy-700 mb-6">Enter your Lord name and the name of your capital settlement to begin your months-long campaign.</p>
 
             <form onsubmit="handleInitialNaming(event)" class="space-y-4 text-left">
                 <div>
-                    <label class="block text-xs font-bold text-amber-400 mb-1 font-cinzel">Your Lord / Player Name:</label>
-                    <input type="text" id="input-lord-name" required placeholder="e.g. Lord Raynor" class="w-full bg-fantasy-900 border border-fantasy-600 rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
+                    <label class="block text-xs font-bold text-amber-800 mb-1 font-cinzel">Your Lord / Player Name:</label>
+                    <input type="text" id="input-lord-name" required placeholder="e.g. Lord Raynor" class="w-full bg-white border border-fantasy-300 rounded-xl px-3.5 py-2.5 text-xs text-fantasy-900 focus:outline-none focus:border-amber-500 shadow-sm">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-amber-400 mb-1 font-cinzel">Capital Settlement Name:</label>
-                    <input type="text" id="input-settlement-name" required placeholder="e.g. Lagoon Haven" class="w-full bg-fantasy-900 border border-fantasy-600 rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
+                    <label class="block text-xs font-bold text-amber-800 mb-1 font-cinzel">Capital Settlement Name:</label>
+                    <input type="text" id="input-settlement-name" required placeholder="e.g. Lagoon Haven" class="w-full bg-white border border-fantasy-300 rounded-xl px-3.5 py-2.5 text-xs text-fantasy-900 focus:outline-none focus:border-amber-500 shadow-sm">
                 </div>
-                <button type="submit" class="w-full py-3 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 text-fantasy-900 font-bold text-xs md:text-sm rounded-lg shadow-lg font-cinzel tracking-wider uppercase mt-4">
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold text-xs md:text-sm rounded-xl shadow-lg font-cinzel tracking-wider uppercase mt-4">
                     Claim Territory
                 </button>
             </form>
@@ -431,14 +439,14 @@
     </div>
 
     <!-- WORLD EVENT MODAL (DYNAMIC DISASTERS & DIPLOMACY) -->
-    <div id="modal-event" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="parchment-panel rounded-2xl max-w-lg w-full p-6 md:p-8 border border-amber-500 shadow-2xl relative">
-            <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-amber-500/20 border border-amber-500 flex items-center justify-center text-amber-400 text-xl font-bold">
+    <div id="modal-event" class="fixed inset-0 bg-fantasy-950/70 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="parchment-panel rounded-3xl max-w-lg w-full p-6 md:p-8 border-2 border-amber-500 shadow-2xl relative">
+            <div class="w-12 h-12 mx-auto mb-3 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-xl font-bold shadow">
                 <i id="event-modal-icon" class="fa-solid fa-triangle-exclamation"></i>
             </div>
-            <span id="event-type-badge" class="block text-center text-[10px] font-bold text-amber-400 uppercase tracking-widest font-cinzel mb-1">World Event</span>
-            <h2 id="event-title" class="font-cinzel font-bold text-white text-lg text-center mb-2">Tidal Surge & Magical Surge</h2>
-            <p id="event-desc" class="text-xs text-zinc-300 text-center mb-6 leading-relaxed">A powerful storm sweeps across the archipelago. How shall your dominion respond?</p>
+            <span id="event-type-badge" class="block text-center text-[10px] font-bold text-amber-700 uppercase tracking-widest font-cinzel mb-1">World Event</span>
+            <h2 id="event-title" class="font-cinzel font-bold text-fantasy-950 text-lg text-center mb-2">Tidal Surge & Magical Surge</h2>
+            <p id="event-desc" class="text-xs text-fantasy-800 text-center mb-6 leading-relaxed">A powerful storm sweeps across the archipelago. How shall your dominion respond?</p>
 
             <div id="event-options-container" class="space-y-3">
                 <!-- Dynamically populated choice buttons -->
@@ -447,79 +455,79 @@
     </div>
 
     <!-- SETTINGS & DISCORD WEBHOOK MODAL -->
-    <div id="modal-settings" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="parchment-panel rounded-2xl max-w-lg w-full p-6 md:p-8 border border-amber-500 shadow-2xl relative">
-            <button onclick="closeModal('modal-settings')" class="absolute top-4 right-4 text-zinc-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+    <div id="modal-settings" class="fixed inset-0 bg-fantasy-950/70 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="parchment-panel rounded-3xl max-w-lg w-full p-6 md:p-8 border-2 border-amber-500 shadow-2xl relative">
+            <button onclick="closeModal('modal-settings')" class="absolute top-4 right-4 text-fantasy-700 hover:text-fantasy-950"><i class="fa-solid fa-xmark text-xl"></i></button>
             
             <div class="flex items-center space-x-3 mb-4">
-                <div class="w-12 h-12 rounded-xl bg-indigo-500/20 border border-indigo-500 flex items-center justify-center text-indigo-400 text-xl font-bold">
+                <div class="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-xl font-bold shadow">
                     <i class="fa-brands fa-discord"></i>
                 </div>
                 <div>
-                    <h2 class="font-cinzel font-bold text-white text-lg">Discord Webhook Integration</h2>
-                    <p class="text-xs text-zinc-400">Receive alerts when players complete turns.</p>
+                    <h2 class="font-cinzel font-bold text-fantasy-950 text-lg">Discord Webhook Integration</h2>
+                    <p class="text-xs text-fantasy-700">Receive alerts when players complete turns.</p>
                 </div>
             </div>
 
-            <div class="space-y-4 text-xs text-zinc-300 mb-6">
+            <div class="space-y-4 text-xs text-fantasy-800 mb-6">
                 <div>
-                    <label class="block font-bold text-amber-400 mb-1 font-cinzel">Discord Webhook URL:</label>
-                    <input type="url" id="input-discord-webhook" placeholder="https://discord.com/api/webhooks/..." class="w-full bg-fantasy-900 border border-fantasy-600 rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
+                    <label class="block font-bold text-amber-800 mb-1 font-cinzel">Discord Webhook URL:</label>
+                    <input type="url" id="input-discord-webhook" placeholder="https://discord.com/api/webhooks/..." class="w-full bg-white border border-fantasy-300 rounded-xl px-3.5 py-2.5 text-xs text-fantasy-900 focus:outline-none focus:border-amber-500 shadow-sm">
                     <p class="text-[10px] text-zinc-500 mt-1">Paste your channel webhook URL here. Whenever any player ends their turn, an announcement message will automatically post to your Discord server!</p>
                 </div>
             </div>
 
             <div class="flex justify-end space-x-3">
-                <button onclick="closeModal('modal-settings')" class="px-4 py-2 bg-fantasy-700 text-xs font-bold rounded text-zinc-300">Cancel</button>
-                <button onclick="saveDiscordSettings()" class="px-5 py-2 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 text-fantasy-900 font-bold text-xs rounded shadow">Save Settings</button>
+                <button onclick="closeModal('modal-settings')" class="px-4 py-2 bg-fantasy-200 text-xs font-bold rounded-xl text-fantasy-900">Cancel</button>
+                <button onclick="saveDiscordSettings()" class="px-5 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 text-white font-bold text-xs rounded-xl shadow">Save Settings</button>
             </div>
         </div>
     </div>
 
     <!-- TURN 1 TUTORIAL MODAL -->
-    <div id="modal-tutorial" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="parchment-panel rounded-2xl max-w-2xl w-full p-6 md:p-8 border border-amber-500 shadow-2xl relative">
-            <button onclick="closeModal('modal-tutorial')" class="absolute top-4 right-4 text-zinc-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+    <div id="modal-tutorial" class="fixed inset-0 bg-fantasy-950/70 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="parchment-panel rounded-3xl max-w-2xl w-full p-6 md:p-8 border-2 border-amber-500 shadow-2xl relative">
+            <button onclick="closeModal('modal-tutorial')" class="absolute top-4 right-4 text-fantasy-700 hover:text-fantasy-950"><i class="fa-solid fa-xmark text-xl"></i></button>
             
             <div class="flex items-center space-x-3 mb-4">
-                <div class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500 flex items-center justify-center text-amber-400 text-xl font-bold">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-xl font-bold shadow">
                     <i class="fa-solid fa-scroll"></i>
                 </div>
                 <div>
-                    <span id="tutorial-subtitle" class="text-xs font-bold text-amber-400 uppercase tracking-widest font-cinzel">Welcome, Lord</span>
-                    <h2 class="font-cinzel font-bold text-white text-xl md:text-2xl">Lagoon Chronicles: Campaign Guide</h2>
+                    <span id="tutorial-subtitle" class="text-xs font-bold text-amber-800 uppercase tracking-widest font-cinzel">Welcome, Lord</span>
+                    <h2 class="font-cinzel font-bold text-fantasy-950 text-xl md:text-2xl">Lagoon Chronicles: Campaign Guide</h2>
                 </div>
             </div>
 
-            <div class="space-y-4 text-xs md:text-sm text-zinc-300 mb-6 max-h-[60vh] overflow-y-auto pr-2">
-                <div class="bg-fantasy-900/90 p-4 rounded-xl border border-fantasy-600">
-                    <h3 class="font-cinzel font-bold text-amber-400 text-sm mb-1 flex items-center space-x-2">
-                        <i class="fa-solid fa-bolt text-amber-500"></i>
-                        <span>1. Action Points (AP) Energy System</span>
+            <div class="space-y-4 text-xs md:text-sm text-fantasy-800 mb-6 max-h-[60vh] overflow-y-auto pr-2">
+                <div class="bg-white p-4 rounded-xl border border-fantasy-300 shadow-sm">
+                    <h3 class="font-cinzel font-bold text-amber-800 text-sm mb-1 flex items-center space-x-2">
+                        <i class="fa-solid fa-bolt text-amber-600"></i>
+                        <span>1. True Hex Map & Procedural Expansion</span>
                     </h3>
-                    <p class="text-zinc-400 leading-relaxed">Each turn gives you a limited pool of Action Points (AP) to spend on exploring fogged hexes, dispatching champions, or raiding nodes. AP completely resets when you end your turn! Build Town Halls to permanently increase your max AP.</p>
+                    <p class="text-fantasy-700 leading-relaxed">The game begins with a procedurally generated grid of 25 geometric hex tiles. Click adjacent fogged hexes and spend 1 AP to explore them, which automatically spawns new unexplored wilderness hexes at the borders!</p>
                 </div>
 
-                <div class="bg-fantasy-900/90 p-4 rounded-xl border border-fantasy-600">
-                    <h3 class="font-cinzel font-bold text-amber-400 text-sm mb-1 flex items-center space-x-2">
-                        <i class="fa-solid fa-compass text-amber-500"></i>
-                        <span>2. Fog of War & Hex Exploration</span>
+                <div class="bg-white p-4 rounded-xl border border-fantasy-300 shadow-sm">
+                    <h3 class="font-cinzel font-bold text-amber-800 text-sm mb-1 flex items-center space-x-2">
+                        <i class="fa-solid fa-bolt text-amber-600"></i>
+                        <span>2. Action Points (AP) Energy System</span>
                     </h3>
-                    <p class="text-zinc-400 leading-relaxed">The archipelago starts covered in Fog of War. Click adjacent fogged hexes and spend 1 AP to explore them, revealing terrain artwork, resource yields, and secret encounters.</p>
+                    <p class="text-fantasy-700 leading-relaxed">Each turn gives you a limited pool of Action Points (AP) to spend on exploring fogged hexes or dispatching champions. AP completely resets when you end your turn! Build Town Halls to permanently increase your max AP.</p>
                 </div>
 
-                <div class="bg-fantasy-900/90 p-4 rounded-xl border border-fantasy-600">
-                    <h3 class="font-cinzel font-bold text-amber-400 text-sm mb-1 flex items-center space-x-2">
-                        <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
+                <div class="bg-white p-4 rounded-xl border border-fantasy-300 shadow-sm">
+                    <h3 class="font-cinzel font-bold text-amber-800 text-sm mb-1 flex items-center space-x-2">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-600"></i>
                         <span>3. Random World Events & Strict Turn Locks</span>
                     </h3>
-                    <p class="text-zinc-400 leading-relaxed">Random diplomatic or weather disaster events may trigger when starting a new turn. Additionally, strict turn locks ensure actions cannot be performed while waiting for the next turn cycle.</p>
+                    <p class="text-fantasy-700 leading-relaxed">Random diplomatic or weather disaster events trigger when starting a new turn. Strict turn locks ensure actions cannot be performed while waiting for the next turn cycle.</p>
                 </div>
             </div>
 
-            <div class="flex justify-between items-center pt-3 border-t border-fantasy-600">
-                <span class="text-[11px] text-zinc-400">Re-open this guide anytime using the top Guide button.</span>
-                <button onclick="closeModal('modal-tutorial')" class="px-6 py-2.5 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 text-fantasy-900 font-bold text-xs md:text-sm rounded-lg shadow-lg font-cinzel">
+            <div class="flex justify-between items-center pt-3 border-t border-fantasy-300">
+                <span class="text-[11px] text-fantasy-700">Re-open this guide anytime using the top Guide button.</span>
+                <button onclick="closeModal('modal-tutorial')" class="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 text-white font-bold text-xs md:text-sm rounded-xl shadow-lg font-cinzel">
                     Begin Your Reign
                 </button>
             </div>
@@ -527,81 +535,81 @@
     </div>
 
     <!-- MODAL: END TURN CONFIRMATION -->
-    <div id="modal-actions" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="parchment-panel rounded-2xl max-w-md w-full p-6 border border-amber-500/40 shadow-2xl relative">
-            <button onclick="closeModal('modal-actions')" class="absolute top-4 right-4 text-zinc-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <h3 class="font-cinzel font-bold text-amber-400 text-lg mb-2 flex items-center space-x-2">
-                <i class="fa-solid fa-forward text-amber-500"></i>
+    <div id="modal-actions" class="fixed inset-0 bg-fantasy-950/70 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="parchment-panel rounded-3xl max-w-md w-full p-6 border-2 border-amber-500 shadow-2xl relative">
+            <button onclick="closeModal('modal-actions')" class="absolute top-4 right-4 text-fantasy-700 hover:text-fantasy-950"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="font-cinzel font-bold text-fantasy-950 text-lg mb-2 flex items-center space-x-2">
+                <i class="fa-solid fa-forward text-amber-600"></i>
                 <span>End Turn & Advance World</span>
             </h3>
-            <p class="text-xs text-zinc-400 mb-4">Ending your turn resets your Action Points (AP), collects passive resource income, rolls random world events, and notifies your Discord channel.</p>
+            <p class="text-xs text-fantasy-700 mb-4">Ending your turn resets your Action Points (AP), collects passive resource income, rolls random world events, and notifies your Discord channel.</p>
 
             <div class="flex justify-end space-x-3">
-                <button onclick="closeModal('modal-actions')" class="px-4 py-2 bg-fantasy-700 hover:bg-fantasy-600 text-xs font-bold rounded text-zinc-300">Cancel</button>
-                <button onclick="endPlayerTurn()" class="px-5 py-2 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 text-fantasy-900 font-bold text-xs rounded shadow">Confirm End Turn</button>
+                <button onclick="closeModal('modal-actions')" class="px-4 py-2 bg-fantasy-200 hover:bg-fantasy-300 text-xs font-bold rounded-xl text-fantasy-900">Cancel</button>
+                <button onclick="endPlayerTurn()" class="px-5 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 text-white font-bold text-xs rounded-xl shadow">Confirm End Turn</button>
             </div>
         </div>
     </div>
 
     <!-- MODAL: RECRUIT HERO -->
-    <div id="modal-recruit" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="parchment-panel rounded-2xl max-w-md w-full p-6 border border-amber-500/40 shadow-2xl relative">
-            <button onclick="closeModal('modal-recruit')" class="absolute top-4 right-4 text-zinc-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <h3 class="font-cinzel font-bold text-amber-400 text-lg mb-2 flex items-center space-x-2">
-                <i class="fa-solid fa-user-plus text-amber-500"></i>
+    <div id="modal-recruit" class="fixed inset-0 bg-fantasy-950/70 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="parchment-panel rounded-3xl max-w-md w-full p-6 border-2 border-amber-500 shadow-2xl relative">
+            <button onclick="closeModal('modal-recruit')" class="absolute top-4 right-4 text-fantasy-700 hover:text-fantasy-950"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="font-cinzel font-bold text-fantasy-950 text-lg mb-2 flex items-center space-x-2">
+                <i class="fa-solid fa-user-plus text-amber-600"></i>
                 <span>Recruit Champion</span>
             </h3>
-            <p class="text-xs text-zinc-400 mb-4">Hire mercenary champions from the port tavern to command your armies.</p>
+            <p class="text-xs text-fantasy-700 mb-4">Hire mercenary champions from the port tavern to command your armies.</p>
 
             <div class="space-y-3 mb-6">
-                <div class="bg-fantasy-900 p-3 rounded-lg border border-fantasy-600 flex justify-between items-center">
+                <div class="bg-white p-3.5 rounded-xl border border-fantasy-300 flex justify-between items-center shadow-sm">
                     <div>
-                        <div class="text-xs font-bold text-white">Tide Mage</div>
-                        <div class="text-[10px] text-amber-400">ATK: 30 • DEF: 10 • MAG: 35</div>
-                        <div class="text-[10px] text-zinc-400">Cost: 60 Gold, 30 Mana</div>
+                        <div class="text-xs font-bold text-fantasy-900">Tide Mage</div>
+                        <div class="text-[10px] text-amber-700 font-semibold">ATK: 30 • DEF: 10 • MAG: 35</div>
+                        <div class="text-[10px] text-zinc-500">Cost: 60 Gold, 30 Mana</div>
                     </div>
-                    <button onclick="recruitHero('Tide Mage', 60, 30, 'Tide Mage', 30, 10, 35)" class="bg-amber-600 hover:bg-amber-500 text-fantasy-900 font-bold text-xs px-3 py-1.5 rounded">Recruit</button>
+                    <button onclick="recruitHero('Tide Mage', 60, 30, 'Tide Mage', 30, 10, 35)" class="bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs px-3.5 py-2 rounded-xl shadow-sm">Recruit</button>
                 </div>
-                <div class="bg-fantasy-900 p-3 rounded-lg border border-fantasy-600 flex justify-between items-center">
+                <div class="bg-white p-3.5 rounded-xl border border-fantasy-300 flex justify-between items-center shadow-sm">
                     <div>
-                        <div class="text-xs font-bold text-white">Abyssal Knight</div>
-                        <div class="text-[10px] text-amber-400">ATK: 40 • DEF: 35 • MAG: 5</div>
-                        <div class="text-[10px] text-zinc-400">Cost: 80 Gold, 40 Ore</div>
+                        <div class="text-xs font-bold text-fantasy-900">Abyssal Knight</div>
+                        <div class="text-[10px] text-amber-700 font-semibold">ATK: 40 • DEF: 35 • MAG: 5</div>
+                        <div class="text-[10px] text-zinc-500">Cost: 80 Gold, 40 Ore</div>
                     </div>
-                    <button onclick="recruitHero('Abyssal Knight', 80, 40, 'Abyssal Knight', 40, 35, 5)" class="bg-amber-600 hover:bg-amber-500 text-fantasy-900 font-bold text-xs px-3 py-1.5 rounded">Recruit</button>
+                    <button onclick="recruitHero('Abyssal Knight', 80, 40, 'Abyssal Knight', 40, 35, 5)" class="bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs px-3.5 py-2 rounded-xl shadow-sm">Recruit</button>
                 </div>
             </div>
             <div class="flex justify-end">
-                <button onclick="closeModal('modal-recruit')" class="px-4 py-2 bg-fantasy-700 text-xs font-bold rounded text-zinc-300">Close</button>
+                <button onclick="closeModal('modal-recruit')" class="px-4 py-2 bg-fantasy-200 text-xs font-bold rounded-xl text-fantasy-900">Close</button>
             </div>
         </div>
     </div>
 
     <!-- MODAL: CREATE TRADE -->
-    <div id="modal-create-trade" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="parchment-panel rounded-2xl max-w-md w-full p-6 border border-amber-500/40 shadow-2xl relative">
-            <button onclick="closeModal('modal-create-trade')" class="absolute top-4 right-4 text-zinc-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <h3 class="font-cinzel font-bold text-amber-400 text-lg mb-2 flex items-center space-x-2">
-                <i class="fa-solid fa-scale-balanced text-amber-500"></i>
+    <div id="modal-create-trade" class="fixed inset-0 bg-fantasy-950/70 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="parchment-panel rounded-3xl max-w-md w-full p-6 border-2 border-amber-500 shadow-2xl relative">
+            <button onclick="closeModal('modal-create-trade')" class="absolute top-4 right-4 text-fantasy-700 hover:text-fantasy-950"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="font-cinzel font-bold text-fantasy-950 text-lg mb-2 flex items-center space-x-2">
+                <i class="fa-solid fa-scale-balanced text-amber-600"></i>
                 <span>Create Marketplace Offer</span>
             </h3>
-            <p class="text-xs text-zinc-400 mb-4">List resources on the global exchange for other lords.</p>
+            <p class="text-xs text-fantasy-700 mb-4">List resources on the global exchange for other lords.</p>
 
             <div class="space-y-3 mb-6">
                 <div>
-                    <label class="block text-[11px] text-zinc-400 mb-1">You Offer:</label>
+                    <label class="block text-[11px] text-fantasy-700 mb-1 font-bold">You Offer:</label>
                     <div class="flex space-x-2">
-                        <input type="number" value="20" class="w-20 bg-fantasy-900 border border-fantasy-600 rounded px-2 py-1 text-xs text-white">
-                        <select class="flex-1 bg-fantasy-900 border border-fantasy-600 rounded px-2 py-1 text-xs text-white">
+                        <input type="number" value="20" class="w-20 bg-white border border-fantasy-300 rounded-xl px-3 py-2 text-xs text-fantasy-900 shadow-sm">
+                        <select class="flex-1 bg-white border border-fantasy-300 rounded-xl px-3 py-2 text-xs text-fantasy-900 shadow-sm">
                             <option>Wood</option><option>Ore</option><option>Gold</option><option>Mana</option>
                         </select>
                     </div>
                 </div>
                 <div>
-                    <label class="block text-[11px] text-zinc-400 mb-1">You Request in Return:</label>
+                    <label class="block text-[11px] text-fantasy-700 mb-1 font-bold">You Request in Return:</label>
                     <div class="flex space-x-2">
-                        <input type="number" value="15" class="w-20 bg-fantasy-900 border border-fantasy-600 rounded px-2 py-1 text-xs text-white">
-                        <select class="flex-1 bg-fantasy-900 border border-fantasy-600 rounded px-2 py-1 text-xs text-white">
+                        <input type="number" value="15" class="w-20 bg-white border border-fantasy-300 rounded-xl px-3 py-2 text-xs text-fantasy-900 shadow-sm">
+                        <select class="flex-1 bg-white border border-fantasy-300 rounded-xl px-3 py-2 text-xs text-fantasy-900 shadow-sm">
                             <option>Ore</option><option>Wood</option><option>Gold</option><option>Mana</option>
                         </select>
                     </div>
@@ -609,44 +617,107 @@
             </div>
 
             <div class="flex justify-end space-x-3">
-                <button onclick="closeModal('modal-create-trade')" class="px-4 py-2 bg-fantasy-700 text-xs font-bold rounded text-zinc-300">Cancel</button>
-                <button onclick="postTradeOffer()" class="px-4 py-2 bg-amber-600 text-fantasy-900 font-bold text-xs rounded">Publish Listing</button>
+                <button onclick="closeModal('modal-create-trade')" class="px-4 py-2 bg-fantasy-200 text-xs font-bold rounded-xl text-fantasy-900">Cancel</button>
+                <button onclick="postTradeOffer()" class="px-4.5 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl shadow">Publish Listing</button>
             </div>
         </div>
     </div>
 
     <!-- MODAL: POST MESSAGEBOARD NOTE -->
-    <div id="modal-post-message" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="parchment-panel rounded-2xl max-w-md w-full p-6 border border-amber-500/40 shadow-2xl relative">
-            <button onclick="closeModal('modal-post-message')" class="absolute top-4 right-4 text-zinc-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <h3 class="font-cinzel font-bold text-amber-400 text-lg mb-2 flex items-center space-x-2">
-                <i class="fa-solid fa-note-sticky text-amber-500"></i>
+    <div id="modal-post-message" class="fixed inset-0 bg-fantasy-950/70 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="parchment-panel rounded-3xl max-w-md w-full p-6 border-2 border-amber-500 shadow-2xl relative">
+            <button onclick="closeModal('modal-post-message')" class="absolute top-4 right-4 text-fantasy-700 hover:text-fantasy-950"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="font-cinzel font-bold text-fantasy-950 text-lg mb-2 flex items-center space-x-2">
+                <i class="fa-solid fa-note-sticky text-amber-600"></i>
                 <span>Post Bulletin Note</span>
             </h3>
-            <p class="text-xs text-zinc-400 mb-4">Leave a permanent public note on the players' messageboard.</p>
+            <p class="text-xs text-fantasy-700 mb-4">Leave a permanent public note on the players' messageboard.</p>
 
             <form onsubmit="handlePostMessage(event)" class="space-y-3 mb-4">
-                <textarea id="input-bulletin-text" required rows="3" placeholder="Write your diplomatic message or decree..." class="w-full bg-fantasy-900 border border-fantasy-600 rounded-lg p-3 text-xs text-white focus:outline-none focus:border-amber-500"></textarea>
+                <textarea id="input-bulletin-text" required rows="3" placeholder="Write your diplomatic message or decree..." class="w-full bg-white border border-fantasy-300 rounded-xl p-3.5 text-xs text-fantasy-900 focus:outline-none focus:border-amber-500 shadow-sm"></textarea>
                 <div class="flex justify-end space-x-2">
-                    <button type="button" onclick="closeModal('modal-post-message')" class="px-4 py-2 bg-fantasy-700 text-xs font-bold rounded text-zinc-300">Cancel</button>
-                    <button type="submit" class="px-4 py-2 bg-amber-600 text-fantasy-900 font-bold text-xs rounded">Post Note</button>
+                    <button type="button" onclick="closeModal('modal-post-message')" class="px-4 py-2 bg-fantasy-200 text-xs font-bold rounded-xl text-fantasy-900">Cancel</button>
+                    <button type="submit" class="px-4.5 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl shadow">Post Note</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- CUSTOM TOAST MESSAGE BOX -->
-    <div id="toast-box" class="fixed bottom-5 right-5 bg-fantasy-800 border border-amber-500/60 text-white px-4 py-3 rounded-xl shadow-2xl transform translate-y-24 opacity-0 transition-all duration-300 z-50 flex items-center space-x-3">
-        <div id="toast-icon" class="text-amber-400 text-lg"><i class="fa-solid fa-circle-check"></i></div>
+    <div id="toast-box" class="fixed bottom-5 right-5 bg-white border-2 border-amber-500 text-fantasy-950 px-5 py-3.5 rounded-2xl shadow-2xl transform translate-y-28 opacity-0 transition-all duration-300 z-50 flex items-center space-x-3.5">
+        <div id="toast-icon" class="text-amber-600 text-xl"><i class="fa-solid fa-circle-check"></i></div>
         <div>
-            <div id="toast-title" class="text-xs font-bold text-amber-400 font-cinzel">Success</div>
-            <div id="toast-msg" class="text-[11px] text-zinc-300">Action completed successfully.</div>
+            <div id="toast-title" class="text-xs font-bold text-amber-800 font-cinzel">Success</div>
+            <div id="toast-msg" class="text-[11px] text-fantasy-700">Action completed successfully.</div>
         </div>
     </div>
 
     <!-- JavaScript Game Logic -->
     <script>
-        // Initial fresh state with True Hex Map & AP Energy system
+        // Terrain Types Config
+        const terrainTypes = [
+            { type: 'Forest', icon: 'fa-tree', color: '#b88626', bg: '#fef3c7', yield: '+10 Wood' },
+            { type: 'Mountain', icon: 'fa-mountain', color: '#71717a', bg: '#f4f4f5', yield: '+5 Ore' },
+            { type: 'Farm', icon: 'fa-wheat-awn', color: '#059669', bg: '#ecfdf5', yield: '+15 Gold' },
+            { type: 'Clay Pit', icon: 'fa-cubes', color: '#9a3412', bg: '#fff7ed', yield: '+12 Brick' },
+            { type: 'Nexus', icon: 'fa-wand-sparkles', color: '#2563eb', bg: '#eff6ff', yield: '+8 Mana' }
+        ];
+
+        // Generate 25 Hexes in Axial coordinates (radius 2)
+        function generateStarting25Hexes() {
+            const hexes = [];
+            let idCounter = 0;
+            const radius = 2; // radius 2 gives 1 + 6 + 12 = 19? Wait, standard radius 2 hex grid gives 19. For 25 hexes, radius 2 with some extensions or radius 3 truncated: let's generate 25 precisely using spiral/axial generation.
+            
+            for (let q = -3; q <= 3; q++) {
+                let r1 = Math.max(-3, -q - 3);
+                let r2 = Math.min(3, -q + 3);
+                for (let r = r1; r <= r2; r++) {
+                    if (hexes.length >= 25) break;
+                    
+                    const isCapital = (q === 0 && r === 0);
+                    const terrain = isCapital ? terrainTypes[0] : terrainTypes[Math.floor(Math.random() * terrainTypes.length)];
+                    
+                    hexes.push({
+                        id: idCounter++,
+                        q: q,
+                        r: r,
+                        name: isCapital ? 'Capital: Lagoon Haven' : `${terrain.type} Outpost`,
+                        type: terrain.type,
+                        icon: terrain.icon,
+                        color: terrain.color,
+                        hexBg: terrain.bg,
+                        explored: isCapital ? true : (Math.abs(q) + Math.abs(r) <= 1), // Capital + immediate neighbors explored by default
+                        owner: isCapital ? 'Your Settlement' : 'Neutral',
+                        yield: terrain.yield
+                    });
+                }
+            }
+            
+            // Ensure exactly 25 if needed
+            while (hexes.length < 25) {
+                const q = Math.floor(Math.random() * 5) - 2;
+                const r = Math.floor(Math.random() * 5) - 2;
+                if (!hexes.some(h => h.q === q && h.r === r)) {
+                    const terrain = terrainTypes[Math.floor(Math.random() * terrainTypes.length)];
+                    hexes.push({
+                        id: hexes.length,
+                        q: q,
+                        r: r,
+                        name: `${terrain.type} Outpost`,
+                        type: terrain.type,
+                        icon: terrain.icon,
+                        color: terrain.color,
+                        hexBg: terrain.bg,
+                        explored: false,
+                        owner: 'Neutral',
+                        yield: terrain.yield
+                    });
+                }
+            }
+            return hexes;
+        }
+
         const defaultGameState = {
             turn: 1,
             ap: 5,
@@ -662,16 +733,7 @@
             heroes: [
                 { name: 'Sir Valen the Tideseeker', class: 'Paladin', level: 1, atk: 25, def: 20, mag: 10, status: 'Ready' }
             ],
-            hexMap: [
-                { id: 0, name: 'Lagoon Forest (Capital)', type: 'Forest', icon: 'fa-tree', color: 'text-amber-500', bg: 'bg-amber-900/50', explored: true, owner: 'Your Settlement', yield: '+10 Wood' },
-                { id: 1, name: 'Sunken Reefs', type: 'Mountain', icon: 'fa-mountain', color: 'text-zinc-300', bg: 'bg-zinc-800', explored: false, owner: 'Neutral', yield: '+5 Ore' },
-                { id: 2, name: 'Coral Treasury', type: 'Farm', icon: 'fa-wheat-awn', color: 'text-emerald-400', bg: 'bg-emerald-900/40', explored: false, owner: 'Neutral', yield: '+15 Gold' },
-                { id: 3, name: 'Mystic Lagoon', type: 'Nexus', icon: 'fa-wand-sparkles', color: 'text-blue-400', bg: 'bg-blue-900/40', explored: false, owner: 'Neutral', yield: '+5 Mana' },
-                { id: 4, name: 'Obsidian Atoll', type: 'Mountain', icon: 'fa-mountain', color: 'text-zinc-400', bg: 'bg-zinc-900', explored: false, owner: 'Neutral', yield: '+8 Ore' },
-                { id: 5, name: 'Whispering Woods', type: 'Forest', icon: 'fa-tree', color: 'text-amber-600', bg: 'bg-amber-950/60', explored: false, owner: 'Neutral', yield: '+12 Wood' },
-                { id: 6, name: 'Siren Shallows', type: 'Nexus', icon: 'fa-water', color: 'text-blue-500', bg: 'bg-blue-950/60', explored: false, owner: 'Neutral', yield: '+10 Mana' },
-                { id: 7, name: 'Golden Plains', type: 'Farm', icon: 'fa-wheat-awn', color: 'text-emerald-500', bg: 'bg-emerald-950/60', explored: false, owner: 'Neutral', yield: '+20 Gold' }
-            ],
+            hexMap: [],
             selectedHexId: 0,
             log: ['Lagoon Chronicles established. Welcome!'],
             chatMessages: [
@@ -686,10 +748,13 @@
 
         // Load saved state on window load
         window.onload = function() {
-            const saved = localStorage.getItem('lagoon_chronicles_gamestate_v4');
+            const saved = localStorage.getItem('lagoon_chronicles_gamestate_v5');
             if (saved) {
                 try {
                     gameState = JSON.parse(saved);
+                    if (!gameState.hexMap || gameState.hexMap.length === 0) {
+                        gameState.hexMap = generateStarting25Hexes();
+                    }
                     updateUI();
                     if (!gameState.settlementName) {
                         openModal('modal-naming');
@@ -704,17 +769,18 @@
         };
 
         function saveGameState() {
-            localStorage.setItem('lagoon_chronicles_gamestate_v4', JSON.stringify(gameState));
+            localStorage.setItem('lagoon_chronicles_gamestate_v5', JSON.stringify(gameState));
         }
 
         function initFreshGame() {
             gameState = JSON.parse(JSON.stringify(defaultGameState));
+            gameState.hexMap = generateStarting25Hexes();
             saveGameState();
             updateUI();
         }
 
         function resetGame() {
-            localStorage.removeItem('lagoon_chronicles_gamestate_v4');
+            localStorage.removeItem('lagoon_chronicles_gamestate_v5');
             initFreshGame();
             showToast("Lagoon Reset", "The game has been reset back to Turn 1 successfully!");
             openModal('modal-naming');
@@ -760,27 +826,26 @@
         function switchTab(tabName) {
             ['realm', 'heroes', 'market', 'social'].forEach(t => {
                 document.getElementById('tab-content-' + t).classList.add('hidden');
-                document.getElementById('tab-btn-' + t).className = "flex-1 py-2 text-xs font-bold rounded-md text-zinc-400 hover:text-white transition flex items-center justify-center space-x-1 relative";
+                document.getElementById('tab-btn-' + t).className = "flex-1 py-2 text-xs font-bold rounded-lg text-fantasy-800 hover:text-fantasy-950 transition flex items-center justify-center space-x-1";
             });
             document.getElementById('tab-content-' + tabName).classList.remove('hidden');
-            document.getElementById('tab-btn-' + tabName).className = "flex-1 py-2 text-xs font-bold rounded-md bg-amber-600 text-fantasy-900 transition flex items-center justify-center space-x-1 shadow relative";
+            document.getElementById('tab-btn-' + tabName).className = "flex-1 py-2 text-xs font-bold rounded-lg bg-amber-500 text-white transition flex items-center justify-center space-x-1 shadow-sm";
         }
 
         function switchSocialSub(subName) {
             if (subName === 'chat') {
                 document.getElementById('social-sub-chat').classList.remove('hidden');
                 document.getElementById('social-sub-board').classList.add('hidden');
-                document.getElementById('social-btn-chat').className = "flex-1 py-1.5 font-bold rounded bg-amber-600 text-fantasy-900 transition";
-                document.getElementById('social-btn-board').className = "flex-1 py-1.5 font-bold rounded text-zinc-400 hover:text-white transition";
+                document.getElementById('social-btn-chat').className = "flex-1 py-1.5 font-bold rounded-md bg-amber-500 text-white transition shadow-sm";
+                document.getElementById('social-btn-board').className = "flex-1 py-1.5 font-bold rounded-md text-fantasy-800 hover:text-fantasy-950 transition";
             } else {
                 document.getElementById('social-sub-chat').classList.add('hidden');
                 document.getElementById('social-sub-board').classList.remove('hidden');
-                document.getElementById('social-btn-board').className = "flex-1 py-1.5 font-bold rounded bg-amber-600 text-fantasy-900 transition";
-                document.getElementById('social-btn-chat').className = "flex-1 py-1.5 font-bold rounded text-zinc-400 hover:text-white transition";
+                document.getElementById('social-btn-board').className = "flex-1 py-1.5 font-bold rounded-md bg-amber-500 text-white transition shadow-sm";
+                document.getElementById('social-btn-chat').className = "flex-1 py-1.5 font-bold rounded-md text-fantasy-800 hover:text-fantasy-950 transition";
             }
         }
 
-        // Modal controls
         function openModal(id) {
             if (id === 'modal-settings') {
                 document.getElementById('input-discord-webhook').value = gameState.discordWebhook || '';
@@ -791,19 +856,17 @@
             document.getElementById(id).classList.add('hidden');
         }
 
-        // Toast notifications
         function showToast(title, message) {
             const toast = document.getElementById('toast-box');
             document.getElementById('toast-title').innerText = title;
             document.getElementById('toast-msg').innerText = message;
             
-            toast.classList.remove('translate-y-24', 'opacity-0');
+            toast.classList.remove('translate-y-28', 'opacity-0');
             setTimeout(() => {
-                toast.classList.add('translate-y-24', 'opacity-0');
+                toast.classList.add('translate-y-28', 'opacity-0');
             }, 3500);
         }
 
-        // Action Point check guard
         function checkAndSpendAP(cost = 1) {
             if (!gameState.isMyTurn) {
                 showToast("Turn Locked", "You cannot perform actions while it is not your turn!");
@@ -818,7 +881,6 @@
             return true;
         }
 
-        // Upgrade Building
         function upgradeBuilding(name, woodCost, oreCost) {
             if (!checkAndSpendAP(1)) return;
             if (gameState.wood >= woodCost && gameState.ore >= oreCost) {
@@ -833,13 +895,19 @@
                 logActivity(`Upgraded ${name} to higher tier.`);
                 saveGameState();
             } else {
-                gameState.ap += 1; // refund AP if resource check failed
+                gameState.ap += 1;
                 updateUI();
                 showToast("Insufficient Resources", `You need at least ${woodCost} Wood and ${oreCost} Ore.`);
             }
         }
 
-        // Hex Map Selection & Exploration Logic
+        // Axial to Pixel coordinate conversion for pointy-topped hexagons
+        function axialToPixel(q, r, size = 42) {
+            const x = size * (Math.sqrt(3) * q + Math.sqrt(3)/2 * r);
+            const y = size * (3/2 * r);
+            return { x, y };
+        }
+
         function selectHex(id) {
             gameState.selectedHexId = id;
             const hex = gameState.hexMap.find(h => h.id === id);
@@ -860,57 +928,128 @@
                 btnExplore.classList.add('hidden');
                 btnInteract.classList.remove('hidden');
             }
-            renderHexMap();
+            renderHexMapSVG();
         }
 
+        // Procedural Border Expansion on Exploration
         function exploreSelectedHex() {
             if (!checkAndSpendAP(1)) return;
             const hex = gameState.hexMap.find(h => h.id === gameState.selectedHexId);
             if (hex && !hex.explored) {
                 hex.explored = true;
+                
+                // Spawn new unexplored border hexes around this hex if missing
+                const directions = [
+                    {q: 1, r: 0}, {q: 1, r: -1}, {q: 0, r: -1},
+                    {q: -1, r: 0}, {q: -1, r: 1}, {q: 0, r: 1}
+                ];
+
+                directions.forEach(dir => {
+                    const nq = hex.q + dir.q;
+                    const nr = hex.r + dir.r;
+                    
+                    // Check if hex already exists
+                    const exists = gameState.hexMap.some(h => h.q === nq && h.r === nr);
+                    if (!exists) {
+                        const terrain = terrainTypes[Math.floor(Math.random() * terrainTypes.length)];
+                        gameState.hexMap.push({
+                            id: gameState.hexMap.length,
+                            q: nq,
+                            r: nr,
+                            name: `${terrain.type} Outpost`,
+                            type: terrain.type,
+                            icon: terrain.icon,
+                            color: terrain.color,
+                            hexBg: terrain.bg,
+                            explored: false,
+                            owner: 'Neutral',
+                            yield: terrain.yield
+                        });
+                    }
+                });
+
                 updateUI();
-                showToast("Hex Explored", `You successfully explored ${hex.name}! Revealed new territory resources.`);
-                logActivity(`Explored hex node: ${hex.name}.`);
+                showToast("Hex Explored & World Expanded", `Successfully explored ${hex.name}! New border tiles discovered.`);
+                logActivity(`Explored hex node: ${hex.name} and expanded archipelago.`);
                 saveGameState();
                 selectHex(hex.id);
             }
         }
 
-        function renderHexMap() {
-            const grid = document.getElementById('hex-map-grid');
-            grid.innerHTML = '';
+        function inspectSelectedHex() {
+            const hex = gameState.hexMap.find(h => h.id === gameState.selectedHexId);
+            if (hex) {
+                showToast("Node Inspection", `${hex.name} yields ${hex.yield}. Fully secured under your realm.`);
+            }
+        }
 
+        // Render True SVG Hex Map
+        function renderHexMapSVG() {
+            const svg = document.getElementById('hex-map-svg');
+            svg.innerHTML = '';
+
+            const hexSize = 38; // Radius of hexagon
+
+            // Draw hexes
             gameState.hexMap.forEach(hex => {
+                const { x, y } = axialToPixel(hex.q, hex.r, hexSize);
                 const isSelected = hex.id === gameState.selectedHexId;
-                const card = document.createElement('div');
-                card.onclick = () => selectHex(hex.id);
-                
-                let borderClass = isSelected ? 'border-amber-400 ring-2 ring-amber-500/50' : 'border-fantasy-600 hover:border-amber-500/50';
+
+                const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                g.setAttribute('transform', `translate(${x}, ${y})`);
+                g.style.cursor = 'pointer';
+                g.onclick = () => selectHex(hex.id);
+
+                // Hexagon Polygon Points (Pointy-topped)
+                const points = [];
+                for (let i = 0; i < 6; i++) {
+                    const angle = (Math.PI / 3) * i - Math.PI / 6;
+                    const hx = hexSize * Math.cos(angle);
+                    const hy = hexSize * Math.sin(angle);
+                    points.push(`${hx},${hy}`);
+                }
+
+                const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                polygon.setAttribute('points', points.join(' '));
                 
                 if (!hex.explored) {
-                    card.className = `group cursor-pointer bg-fantasy-900/60 border-2 ${borderClass} rounded-xl p-3 text-center transition shadow relative overflow-hidden flex flex-col items-center justify-center min-h-[100px]`;
-                    card.innerHTML = `
-                        <div class="w-8 h-8 mx-auto mb-1 rounded-full bg-fantasy-800 border border-fantasy-600 flex items-center justify-center text-zinc-500">
-                            <i class="fa-solid fa-eye-slash text-xs"></i>
-                        </div>
-                        <div class="font-cinzel font-bold text-[11px] text-zinc-400">Fog of War</div>
-                        <div class="text-[9px] text-amber-400/80 mt-1">Click to Explore</div>
-                    `;
+                    polygon.setAttribute('fill', '#d4d4d8');
+                    polygon.setAttribute('stroke', '#a1a1aa');
+                    polygon.setAttribute('stroke-width', isSelected ? '3' : '1.5');
                 } else {
-                    card.className = `group cursor-pointer bg-fantasy-800/90 hover:bg-fantasy-700/90 border-2 ${borderClass} rounded-xl p-3 text-center transition shadow-lg transform hover:-translate-y-0.5 flex flex-col items-center justify-center min-h-[100px]`;
-                    card.innerHTML = `
-                        <div class="w-8 h-8 mx-auto mb-1 rounded-full ${hex.bg} border border-fantasy-600 flex items-center justify-center ${hex.color} group-hover:scale-110 transition">
-                            <i class="fa-solid ${hex.icon} text-sm"></i>
-                        </div>
-                        <div class="font-cinzel font-bold text-[11px] text-white truncate w-full">${hex.name}</div>
-                        <div class="text-[9px] ${hex.color} font-medium">${hex.yield}</div>
+                    polygon.setAttribute('fill', hex.hexBg);
+                    polygon.setAttribute('stroke', isSelected ? '#ca8a04' : hex.color);
+                    polygon.setAttribute('stroke-width', isSelected ? '3.5' : '2');
+                }
+                g.appendChild(polygon);
+
+                // Icon or text inside hex
+                const foreignObject = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
+                foreignObject.setAttribute('x', '-25');
+                foreignObject.setAttribute('y', '-25');
+                foreignObject.setAttribute('width', '50');
+                foreignObject.setAttribute('height', '50');
+                foreignObject.style.overflow = 'visible';
+
+                const div = document.createElement('div');
+                div.className = "w-full h-full flex flex-col items-center justify-center text-center select-none pointer-events-none";
+
+                if (!hex.explored) {
+                    div.innerHTML = `<i class="fa-solid fa-eye-slash text-zinc-500 text-sm"></i><span class="text-[8px] font-bold text-zinc-600 mt-0.5">Fog</span>`;
+                } else {
+                    div.innerHTML = `
+                        <i class="fa-solid ${hex.icon} text-sm" style="color: ${hex.color};"></i>
+                        <span class="text-[8px] font-bold text-fantasy-900 truncate w-12 mt-0.5">${hex.type}</span>
                     `;
                 }
-                grid.appendChild(card);
+
+                foreignObject.appendChild(div);
+                g.appendChild(foreignObject);
+                svg.appendChild(g);
             });
         }
 
-        // Hero Recruitment Bug Fix (Immediately appears in roster)
+        // Hero Recruitment Sync
         function recruitHero(name, goldCost, resourceCost, className, atk, def, mag) {
             closeModal('modal-recruit');
             if (gameState.gold >= goldCost && (gameState.mana >= resourceCost || gameState.ore >= resourceCost)) {
@@ -944,27 +1083,27 @@
 
             gameState.heroes.forEach(hero => {
                 const card = document.createElement('div');
-                card.className = "bg-fantasy-900/80 p-3 rounded-lg border border-amber-500/30";
+                card.className = "bg-white p-3.5 rounded-xl border border-fantasy-300 shadow-sm";
                 card.innerHTML = `
                     <div class="flex items-center justify-between mb-2">
                         <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 rounded-full bg-amber-500/20 border border-amber-500 flex items-center justify-center text-amber-400 font-bold">
+                            <div class="w-10 h-10 rounded-full bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-700 font-bold">
                                 <i class="fa-solid fa-user-ninja"></i>
                             </div>
                             <div>
-                                <div class="text-xs font-bold text-white">${escapeHTML(hero.name)}</div>
-                                <div class="text-[10px] text-amber-400 font-medium">${escapeHTML(hero.class)} • Level ${hero.level}</div>
+                                <div class="text-xs font-bold text-fantasy-900">${escapeHTML(hero.name)}</div>
+                                <div class="text-[10px] text-amber-800 font-bold">${escapeHTML(hero.class)} • Level ${hero.level}</div>
                             </div>
                         </div>
-                        <span class="text-xs bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30">${hero.status}</span>
+                        <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-300 font-semibold">${hero.status}</span>
                     </div>
-                    <div class="grid grid-cols-3 gap-2 text-center text-[10px] bg-fantasy-800/80 p-2 rounded mb-2">
-                        <div><span class="text-zinc-400 block">ATK</span><span class="font-bold text-amber-400 text-xs">${hero.atk}</span></div>
-                        <div><span class="text-zinc-400 block">DEF</span><span class="font-bold text-amber-400 text-xs">${hero.def}</span></div>
-                        <div><span class="text-zinc-400 block">MAG</span><span class="font-bold text-amber-400 text-xs">${hero.mag}</span></div>
+                    <div class="grid grid-cols-3 gap-2 text-center text-[10px] bg-fantasy-50 p-2 rounded-xl mb-2 border border-fantasy-200">
+                        <div><span class="text-fantasy-700 block font-semibold">ATK</span><span class="font-bold text-amber-800 text-xs">${hero.atk}</span></div>
+                        <div><span class="text-fantasy-700 block font-semibold">DEF</span><span class="font-bold text-amber-800 text-xs">${hero.def}</span></div>
+                        <div><span class="text-fantasy-700 block font-semibold">MAG</span><span class="font-bold text-amber-800 text-xs">${hero.mag}</span></div>
                     </div>
                     <div class="flex space-x-2">
-                        <button onclick="dispatchHero('${escapeHTML(hero.name)}')" class="flex-1 bg-fantasy-700 hover:bg-amber-600 hover:text-fantasy-900 text-amber-300 text-xs font-bold py-1.5 rounded border border-fantasy-500 transition">
+                        <button onclick="dispatchHero('${escapeHTML(hero.name)}')" class="flex-1 bg-fantasy-100 hover:bg-amber-500 hover:text-white text-fantasy-900 text-xs font-bold py-2 rounded-xl border border-fantasy-300 transition shadow-sm">
                             <i class="fa-solid fa-map-location-dot mr-1"></i>Dispatch (1 AP)
                         </button>
                     </div>
@@ -1027,7 +1166,7 @@
 
             ev.choices.forEach(ch => {
                 const btn = document.createElement('button');
-                btn.className = "w-full py-2.5 px-4 bg-fantasy-900 hover:bg-amber-600 hover:text-fantasy-900 text-amber-300 border border-fantasy-600 rounded-lg text-xs font-bold transition text-left flex items-center justify-between";
+                btn.className = "w-full py-2.5 px-4 bg-white hover:bg-amber-500 hover:text-white text-fantasy-900 border border-fantasy-300 rounded-xl text-xs font-bold transition text-left flex items-center justify-between shadow-sm";
                 btn.innerHTML = `<span>${ch.text}</span><i class="fa-solid fa-arrow-right"></i>`;
                 btn.onclick = () => {
                     ch.action();
@@ -1059,12 +1198,10 @@
             logActivity(`Ended turn ${completedTurn} and advanced to Turn ${gameState.turn}.`);
             saveGameState();
 
-            // Send Discord notification
             if (gameState.discordWebhook) {
                 sendDiscordWebhook(completedTurn);
             }
 
-            // Trigger random world event on turn start
             setTimeout(() => {
                 triggerRandomWorldEvent();
             }, 600);
@@ -1126,19 +1263,18 @@
             container.innerHTML = '';
             gameState.bulletinPosts.forEach(post => {
                 const bubble = document.createElement('div');
-                bubble.className = "bg-fantasy-800/80 p-2.5 rounded-lg border border-fantasy-600";
+                bubble.className = "bg-white p-3 rounded-xl border border-fantasy-300 shadow-sm";
                 bubble.innerHTML = `
                     <div class="flex justify-between items-center mb-1">
-                        <span class="font-bold text-amber-400 font-cinzel">${escapeHTML(post.sender)}</span>
-                        <span class="text-[9px] text-zinc-500">Turn ${post.turn}</span>
+                        <span class="font-bold text-amber-800 font-cinzel">${escapeHTML(post.sender)}</span>
+                        <span class="text-[9px] text-zinc-400">Turn ${post.turn}</span>
                     </div>
-                    <p class="text-zinc-300">${escapeHTML(post.text)}</p>
+                    <p class="text-fantasy-900">${escapeHTML(post.text)}</p>
                 `;
                 container.appendChild(bubble);
             });
         }
 
-        // Chat System
         function sendChatMessage(event) {
             event.preventDefault();
             const input = document.getElementById('chat-input');
@@ -1162,13 +1298,13 @@
             chatBox.innerHTML = '';
             gameState.chatMessages.forEach(msg => {
                 const bubble = document.createElement('div');
-                bubble.className = "bg-fantasy-800/80 p-2.5 rounded-lg border border-fantasy-600";
+                bubble.className = "bg-white p-3 rounded-xl border border-fantasy-300 shadow-sm";
                 bubble.innerHTML = `
                     <div class="flex justify-between items-center mb-1">
-                        <span class="font-bold text-amber-400 font-cinzel">${escapeHTML(msg.sender)}</span>
-                        <span class="text-[9px] text-zinc-500">Turn ${msg.turn}</span>
+                        <span class="font-bold text-amber-800 font-cinzel">${escapeHTML(msg.sender)}</span>
+                        <span class="text-[9px] text-zinc-400">Turn ${msg.turn}</span>
                     </div>
-                    <p class="text-zinc-300">${escapeHTML(msg.text)}</p>
+                    <p class="text-fantasy-900">${escapeHTML(msg.text)}</p>
                 `;
                 chatBox.appendChild(bubble);
             });
@@ -1198,12 +1334,11 @@
                 document.getElementById('player-avatar-badge').innerText = initials || 'LC';
             }
             
-            // Rebuild activity log
             const logBox = document.getElementById('activity-log');
             logBox.innerHTML = '';
             gameState.log.slice(-10).reverse().forEach(text => {
                 const entry = document.createElement('div');
-                entry.className = "p-2 rounded bg-fantasy-900/40 border-l-2 border-amber-500 text-xs";
+                entry.className = "p-2 rounded-lg bg-white/80 border-l-4 border-amber-500 text-xs shadow-sm";
                 entry.innerHTML = text;
                 logBox.appendChild(entry);
             });
@@ -1211,12 +1346,12 @@
             updateChatUI();
             updateBulletinUI();
             updateHeroesUI();
-            renderHexMap();
+            renderHexMapSVG();
             selectHex(gameState.selectedHexId);
         }
 
         function logActivity(text) {
-            const entryStr = `<span class="text-amber-400 font-semibold">[Turn ${gameState.turn}]</span> ${text}`;
+            const entryStr = `<span class="text-amber-800 font-bold">[Turn ${gameState.turn}]</span> ${text}`;
             gameState.log.push(entryStr);
         }
     </script>
